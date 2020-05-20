@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class=container>
+      <nav class="topnav"> 
+         <ul>
+             <li><a href="index.html">Bj's Video Games</a></li>
+             <li><a href="products.html">Products</a></li>
+             <li><a href="search.html">Search</a></li>
+             <li style="float: right;"><a href="contact.html">Contact Us</a></li>
+         </ul>
+        </nav>
+<!-- <h1>Products</h1> -->
+
+<label for="filterGames">Console:</label>
+            <select id="filterGames" name="filterGames" onchange="changeFunc();">
+                <option value="All">All </option>
+                <option value="Xbox One">Xbox One </option>
+                <option value="PS4">PS4</option>
+                <option value="Nintendo">Nintendo</option>
+                <option value="PC">PC</option>
+              </select>
+
+<h3>Games for Sale</h3>
+
+<a href="productDetail.html">
+    <img alt="Call Of Duty: Modern Warfare" src= "xcmw.jpeg"
+    width=200" height="265">
+ </a>
+<div id=Pname>Call of Duty: Modern Warfare</div> <div id=Pprice>59.99</div>  <div id= Ptype>First Person Shooter</div>
+ <a href="#">
+    <img alt="Call Of Duty: Modern Warfare" src= "pscmw.jpeg"
+    width=200" height="265">
+ </a>
+ <div id=Pname>Call of Duty: Modern Warfare</div> <div id=Pprice>59.99</div> <div id= Ptype>First Person Shooter</div>
+ <a href="#">
+    <img alt="Call Of Duty: Modern Warfare" src= "pccmw.jpeg"
+    width=200" height="265">
+ </a>
+ <div id=Pname>Call of Duty: Modern Warfare</div> <div id=Pprice>59.99</div> <div id= Ptype>First Person Shooter</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

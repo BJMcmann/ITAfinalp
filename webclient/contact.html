@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class=container> 
+        <nav class="topnav"> 
+            <ul>
+                <li><a href="index.html">Bj's Video Games</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="search.html">Search</a></li>
+                <li style="float: right;"><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    <!-- <h1>Contact Us</h1> -->
+
+
+
+    <form action="/action_page.php" method="get">
+        <fieldset>
+            <legend>Form:</legend>
+            <label for="fname">First name:</label>
+            <input type="text" id="fname" name="fname"><br>
+
+            <label for="lname">Last name:</label>
+            <input type="text" id="lname" name="lname"><br>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email"><br>
+
+            <label for="Prefcontact">Prefered Contact Method:</label>
+            <input type="radio" id="emailR" name="Prefcontact" value="emailR">
+            <label for="email">E-mail</label>
+            <input type="radio" id="phoneR" name="Prefcontact" value="phoneR">
+            <label for="female">Phone</label><br>
+
+            <label for="hearUs">How did you find us?</label><br>
+            <input type="checkbox" id="conferenceH" name="conferenceH" value="conference">
+            <label for="conferenceH"> Conference</label>
+            <input type="checkbox" id="tvH" name="tvH" value="tv">
+            <label for="tvH"> TV</label><br>
+            <input type="checkbox" id="radioH" name="radioH" value="radio">
+            <label for="radioH"> Radio</label>
+            <input type="checkbox" id="WordH" name="WordH" value="wordofmouth">
+            <label for="WordH"> Word of Mouth</label><br>
+            <input type="checkbox" id="otherH" name="otherH" value="other">
+            <label for="otherH"> Other</label><br>
+
+            <p class="textbox">Comments:</p>
+            <textarea type="text" id="nameList" value="text..."></textarea><br>
+            <input type="submit" value="Save">
+        </fieldset>  
+    </form>
+
+    </div>
+</body>
+</html>
