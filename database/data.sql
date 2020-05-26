@@ -1,5 +1,6 @@
 CREATE DATABASE ecommerce;
-CREATE TABLE errors (
+CREATE TABLE errors 
+(
     error_code VARCHAR(4),
     log_message VARCHAR(225)
 );
@@ -23,7 +24,8 @@ CREATE TABLE user_data
 );
 
 INSERT INTO products(name, price, description, console)
-VALUES('mw', '59.99', 'First Person Shooter', 'xbox'),
+VALUES
+('mw', '59.99', 'First Person Shooter', 'xbox'),
 ('mw', '59.99', 'First Person Shooter', 'playstation'),
 ('mw', '59.99', 'First Person Shooter', 'pc'),
 ('mw', '59.99', 'First Person Shooter', 'nintendo');
