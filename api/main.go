@@ -57,10 +57,12 @@ type UserData struct {
 
 //Function to pull all products from DB
 func getProducts(w http.ResponseWriter, r *http.Request) {
+	fmt.Println()
+	fmt.Println("products")
+	fmt.Println()
 	//Set header content tyep to application/json
-	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
-
+	enableCors(&w)
 	//Init Products var as a slice Product struct
 	products := []Product{}
 	//query sent to DB
@@ -68,9 +70,11 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 
 	//rows = results of the query
 	rows, err := db.Query(query)
-
+	
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
+		return
+		// panic(err.Error())
 	}
 	// if there is NOT an error do this
 	for rows.Next() {
@@ -80,7 +84,9 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 		//scan the rows and check for discrepancies and store in "err" so we know what the error was for
 		err := rows.Scan(&product.ProductID, &product.Name, &product.Price, &product.Description, &product.Console) //, &product.ImgMain, &product.ImgB, &product.ImgC)
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err)
+			return
+			// panic(err.Error())
 		}
 		// append the returned values to our products variable
 		products = append(products, product)
@@ -89,49 +95,14 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(products)
 }
 
-//Function to get single product
-// func getProduct(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	params := mux.Vars(r) // Get any params
 
-// 	//Loop through products and find with correct id
-// 	for _, item := range books {
-// 		if item.ID == params["id"] {
-// 			json.NewEncoder(w).Encode(item)
-// 			return
-// 		}
-// 	}
-// 	json.NewEncoder(w).Encode(&Book{})
-// }
-
-// function to post user info to DB
-// func createUser(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	var book Book
-// 	_ = json.NewDecoder(r.Body).Decode(&book)
-// 	//create book ID rand int from 1-10000000 AND convert int to string
-// 	book.ID = strconv.Itoa(rand.Intn(10000000)) //mock ID DO NOT USE FOR PRODUCTION could create the same ID
-// 	books = append(books, book)
-// 	json.NewEncoder(w).Encode(book)
-//}
-
-//function to log erros to error DB
-// func logError(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	var book Book
-// 	_ = json.NewDecoder(r.Body).Decode(&book)
-// 	//create book ID rand int from 1-10000000 AND convert int to string
-// 	book.ID = strconv.Itoa(rand.Intn(10000000)) //mock ID DO NOT USE FOR PRODUCTION could create the same ID
-// 	books = append(books, book)
-// 	json.NewEncoder(w).Encode(book)
-// }
 
 func main() {
 	//NEVER COMMIT REAL CREDENTIALS TO GITHUB!!!!!!
 	//mySQL driver import                                    IP FOR LOCAL HOST
-	database, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/ecommerce") // local
+	//database, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/ecommerce") // local
 	//DB connection           Driver   User  Password
-	//database, err := sql.Open("mysql", "root:password@tcp(database:3306)/ecommerce") // docker container
+	database, err := sql.Open("mysql", "root:root@tcp(database:3306)/ecommerce") // docker container
 	if err != nil {
 		panic(err.Error())
 	}

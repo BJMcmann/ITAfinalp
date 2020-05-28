@@ -1,0 +1,45 @@
+version: '3'
+services:
+  database:
+    container_name: golang_db
+    build:
+      context: database
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    ports: 
+      - "3306:3306"
+    networks: 
+      - backend
+  api:
+    container_name: golang_app
+    build: 
+      context: api
+      dockerfile: Dockerfile
+    ports: 
+      - "8070:8070"
+    expose: 
+      - "8070"
+    networks:
+      # - frontend
+      - backend
+    depends_on: 
+      - database
+  webclient:
+    container_name: website_fe
+    build: 
+      context: webclient
+      dockerfile: Dockerfile
+    ports: 
+      - "80:80"
+    networks: 
+      # - frontend
+        - backend
+    depends_on: 
+      - api
+      - database
+networks: 
+  backend:
+  # frontend:

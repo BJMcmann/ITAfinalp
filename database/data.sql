@@ -1,4 +1,5 @@
 CREATE DATABASE ecommerce;
+USE ecommerce;
 CREATE TABLE errors 
 (
     error_code VARCHAR(4),
