@@ -1,174 +1,189 @@
 //declare variables
 var all, xbox, playstation, nintendo, pc;
 var allProductsData;
-var imgLink, imgAlt, imgSrc, Pname, Pprice, Ptype; 
-//set variables
-// xbox = document.getElementById("xbox");
-// playstation = document.getElementById("playstation");
-// nintendo = document.getElementById("nintendo");
-// pc = document.getElementById("pc");
+var results = [];
+//var imgLink, imgSrc, Pname, Pprice, Ptype, Pcon;
 
+function changeFunc() {
 
-
-function changeFunc(){
-  
+  //get filter value in variable
   var filter = document.getElementById("filterGames");
-  
   //Code to test Filter Values
   var filterVal = filter.options[filter.selectedIndex].value;
-  console.log("filterVal: " + filterVal);
-//Filter statement
-  if (filterVal === "All"){
-   //Grab data object
-
-   console.log(allProductsData);
-   filterConsole("");
-   //run function to builds html structure for all products
-  }else if (filterVal === "Xbox One"){
+  console.log("filterVal: ", filterVal);
+  //Filter statement
+  if (filterVal === "All") {
+    //Grab data object
+    //console.log("allProducts Data(pre-filterconsole): " , allProductsData);
+    //console.log("results(pre-filterconsole): " , results);
+    //filterConsole("all");
+    htmlbuilder("all");
+    //console.log("allProducts Data(post-htmlbuilder): " , allProductsData);
+    //console.log("allProducts Data[0](post-htmlbuilder): " , allProductsData[0]);
+    //console.log("allProducts Data[0].console(post-htmlbuilder): " , allProductsData[0].console);
+    //console.log("results(post-htmlbulder): " , results);
+    //run function to builds html structure for all products
+  } else if (filterVal === "Xbox One") {
     //pull xbox one games
-    
-    console.log(allProductsData);
+    //console.log("allProducts Data: " , allProductsData);
     filterConsole("xbox");
-   //getData(xbox);
-  }else if (filterVal === "PS4"){
-    //getData(ps4);
-    
-    console.log(allProductsData);
-    filterConsole("playstation");
-    //pull ps4games
-  }else if (filterVal === "Nintendo"){
-    //getData(nin);
+    //console.log("allProducts Data: " , allProductsData);
+    //console.log("results: " , results);
+    htmlbuilder("xbox");
 
-    console.log(allProductsData);
+    //getData(xbox);
+  } else if (filterVal === "PS4") {
+    //getData(ps4);
+    //console.log("allProducts Data: " , allProductsData);
+    filterConsole("playstation");
+    htmlbuilder("ps4");
+    //pull ps4games
+  } else if (filterVal === "Nintendo") {
+    //getData(nin)
+    //console.log(allProductsData);
     filterConsole("nintendo");
+    htmlbuilder("nintendo");
     //pull nintendo games
-  }else if (filterVal === "PC"){
+  } else if (filterVal === "PC") {
     //getData(pc);
-   
-    console.log(allProductsData);
+    //console.log(allProductsData);
     filterConsole("pc");
+    htmlbuilder("pc");
     //pull pc games
   }
 }
-const data = new Request('http://localhost:8070/products',{
-  method:'GET',
-  mode:'cors'
-})
-async function getData(){
-//Fetch data 
-let response = await fetch(data);
-let allProducts = await response.json();
-//console.log(allProducts.length);
-allProductsData = allProducts;
-
-
-
-// fetch('http://localhost:8070/products', {
-//     method: 'GET',
-//     mode:'cors',
-//     headers: {
-//       "Content-Type": "application/json"
-//       },
-//   })
-// .then(response => response.json())//transform data into json
-// .then(data => console.log(data));
-
-
-// .then(
-//   function(response) {
-//   console.log(response.status)
-//     if (response.status !== 200) {
-//       console.log('Looks like there was a problem. Status Code: ' +
-//         response.status);
-//       return;
-//     }
-//     // Examine the text in the response
-//     response.json().then(function(data) {
-//       console.log(data);
-//     });
-
-//   }
-// )
-// .catch(function(err) {
-//   console.log('Fetch Error :-S', err);
-// });
-
-// function htmlbuilder(param){
-//   const html = `
-//     <div class="productcard">
-//       <a href="${}">
-//         <img alt="${}" src= "${}"
-//         width=200" height="265">
-//       </a>
-//       <p id=Pname>${Pname}</p> <p id=Pprice>${}</p>  <p id= Ptype>${}</p>
-//     </div>
-//   `
-// if (param === "all"){
-
-//   }else if (param === "xbox"){
-
-//   }else if(param === "ps4"){
-
-//   }else if(param === "nin"){
-
-//   }
-//If console = x return x
-//}
-
-//Sort data based on Cat.
-
-
-
-//console.log("Data Returned");
+const data = new Request("http://localhost:8070/products", {
+  method: "GET",
+  mode: "cors",
+});
+async function getData() {
+  //Fetch data
+  let response = await fetch(data);
+  let allProducts = await response.json();
+  //console.log(allProducts.length);
+  allProductsData = allProducts;
 }
 
-function filterConsole(selected){
-  
-  console.log(allProductsData.length);
-  var results;
-  for (i = 0; i < allProductsData.length; i++) {
+function htmlbuilder(x) {
+  if (x === "all") {
+    console.log("all html builder");
+    let html = "";
+    for (i = 0; i < allProductsData.length; i++) {
+      html += `
+    <div id=${allProductsData[i].product_id} class="productcard">
+      <a href="${allProductsData[i].img_link}">
+        <img alt="${allProductsData[i].img_alt}" src= "${allProductsData[i].img_src}"
+        width=200" height="265">
+      </a>
+      <p id=Pname>${allProductsData[i].name}</p> <p id=Pprice>${allProductsData[i].price}</p>  <p id= Ptype>${allProductsData[i].description}</p>  <p id= Pcon>${allProductsData[i].console}</p>
+    </div>
+  `;
+    }
+    //return html;
+    document.getElementById("content").innerHTML = html;
+  } else if (x === "xbox") {
+    console.log("else html builder");
+    let html = "";
+    for (i = 0; i < results.length; i++) {
+      html = `
+    <div class="productcard">
+      <a href="${results[i].img_link}">
+        <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
+        width=200" height="265">
+      </a>
+      <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
+    </div>
+  `;
+    }
+    document.getElementById("content").innerHTML = html;
+  } else if (x === "ps4") {
+    console.log("else html builder");
+    let html = "";
+    for (i = 0; i < results.length; i++) {
+      html = `
+      <div class="productcard">
+        <a href="${results[i].img_link}">
+          <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
+          width=200" height="265">
+        </a>
+        <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
+      </div>
+    `;
+    }
+    document.getElementById("content").innerHTML = html;
+  } else if (x === "pc") {
+    console.log("else html builder");
+    let html = "";
+    for (i = 0; i < results.length; i++) {
+      html = `
+        <div class="productcard">
+          <a href="${results[i].img_link}">
+            <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
+            width=200" height="265">
+          </a>
+          <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
+        </div>
+      `;
+    }
+    document.getElementById("content").innerHTML = html;
+  } else if (x === "nintendo") {
+    console.log("else html builder");
+    let html = "";
+    for (i = 0; i < results.length; i++) {
+      html = `
+          <div class="productcard">
+            <a href="${results[i].img_link}">
+              <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
+              width=200" height="265">
+            </a>
+            <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
+          </div>
+        `;
+    }
+    document.getElementById("content").innerHTML = html;
+  }
+}
 
-    if (selected === "xbox"){
-      for (i = 0; i < allProductsData.length; i++){
-        if (allProductsData[i].console === "xbox"){
-          results = allProductsData[i];
-          console.log(results);
-           return results;
-        }
-      }
-      
-    } else if (selected === "playstation"){
-      for (i = 0; i < allProductsData.length; i++){
-        if (allProductsData[i].console === "playstation"){
-          results = allProductsData[i];
-          console.log(results);
-           return results;
-        }
-      }
-    } else if (selected === "pc"){
-      for (i = 0; i < allProductsData.length; i++){
-        if (allProductsData[i].console === "pc"){
-          results = allProductsData[i];
-          console.log(results);
-           return results;
-        }
-      }
-    } else if (selected === "nintendo"){
-      for (i = 0; i < allProductsData.length; i++){
-        if (allProductsData[i].console === "nintendo"){
-          results = allProductsData[i];
-          console.log(results);
-           return results;
-        }
-      }
-    } else {
-      for (i = 0; i < allProductsData.length; i++){
-        results = allProductsData;
-        console.log(results);
+function filterConsole(selected) {
+  for (i = 0; i < allProductsData.length; i++) {
+    if (selected === "xbox") {
+      for (i = 0; i < allProductsData.length; i++) {
+        if (allProductsData[i].console === "xbox") {
+          result = allProductsData[i];
+          results.push(result);
+          //console.log("results: ", results);
           return results;
+        }
+      }
+    } else if (selected === "playstation") {
+      for (i = 0; i < allProductsData.length; i++) {
+        if (allProductsData[i].console === "playstation") {
+          result = allProductsData[i];
+          results.push(result);
+          //console.log("results: ", results);
+          return results;
+        }
+      }
+    } else if (selected === "pc") {
+      for (i = 0; i < allProductsData.length; i++) {
+        if (allProductsData[i].console === "pc") {
+          result = allProductsData[i];
+          results.push(result);
+          //console.log("results: ", results);
+          return results;
+        }
+      }
+    } else if (selected === "nintendo") {
+      for (i = 0; i < allProductsData.length; i++) {
+        if (allProductsData[i].console === "nintendo") {
+          result = allProductsData[i];
+          results.push(result);
+          //console.log("results: ", results);
+          return results;
+        }
       }
     }
   }
 
-  return results;
+  //return results;
 }

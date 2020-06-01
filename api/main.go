@@ -41,6 +41,9 @@ type Product struct {
 	Price       string `json:"price"`
 	Description string `json:"description"`
 	Console     string `json:"console"`
+	ImgLink     string `json:"img_link"`
+	ImgAlt     	string `json:"img_alt"`
+	ImgSrc      string `json:"img_src"`
 }
 
 //USER: Hold all user data from contact form
@@ -67,7 +70,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	products := []Product{}
 	//query sent to DB
 	query := "SELECT * FROM products"
-
+ 
 	//rows = results of the query
 	rows, err := db.Query(query)
 	
@@ -82,7 +85,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 		//Create new struct for each rown
 		var product Product
 		//scan the rows and check for discrepancies and store in "err" so we know what the error was for
-		err := rows.Scan(&product.ProductID, &product.Name, &product.Price, &product.Description, &product.Console) //, &product.ImgMain, &product.ImgB, &product.ImgC)
+		err := rows.Scan(&product.ProductID, &product.Name, &product.Price, &product.Description, &product.Console, &product.ImgLink, &product.ImgAlt, &product.ImgSrc)
 		if err != nil {
 			fmt.Println(err)
 			return
