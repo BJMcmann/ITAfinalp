@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -42,13 +43,14 @@ type Product struct {
 	Description string `json:"description"`
 	Console     string `json:"console"`
 	ImgLink     string `json:"img_link"`
-	ImgAlt     	string `json:"img_alt"`
+	ImgAlt      string `json:"img_alt"`
 	ImgSrc      string `json:"img_src"`
 }
 
 //USER: Hold all user data from contact form
 
 type UserData struct {
+	UserID        string `json:"product_id"`
 	FirstName     string `json:"firstname"`
 	LastName      string `json:"lastname"`
 	Email         string `json:"email"`
@@ -61,7 +63,7 @@ type UserData struct {
 //Function to pull all products from DB
 func getProducts(w http.ResponseWriter, r *http.Request) {
 	fmt.Println()
-	fmt.Println("products")
+	fmt.Println("pulling products")
 	fmt.Println()
 	//Set header content tyep to application/json
 	w.Header().Set("Content-Type", "application/json")
@@ -70,10 +72,10 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	products := []Product{}
 	//query sent to DB
 	query := "SELECT * FROM products"
- 
+
 	//rows = results of the query
 	rows, err := db.Query(query)
-	
+
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -98,7 +100,46 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(products)
 }
 
+func createUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println()
+	fmt.Println("User Endpoint hit")
+	fmt.Println()
+	//Set header content tyep to application/json
+	w.Header().Set("Content-Type", "application/json")
+	enableCors(&w)
 
+	var user UserData
+
+	json.NewDecoder(r.Body).Decode(&user)
+
+	stmt, err := db.Prepare("INSERT INTO user_data (firstname, lastname, email, phone, contact_method, refferal, comments) VALUES (?,?,?,?,?,?,?)")
+
+	if err != nil {
+		fmt.Println(err)
+		return
+		// panic(err.Error())
+	}
+	// if there is NOT an error do this
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	json.Unmarshal(body, &user)
+
+	_, err = stmt.Exec(user.FirstName, user.LastName, user.Email, user.Phone, user.ContactMethod, user.Referral, user.Comments)
+	if err != nil {
+		fmt.Println(err)
+		return
+		// panic(err.Error())
+	}
+	fmt.Println()
+	fmt.Println("User Posted")
+	fmt.Println()
+
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(user)
+}
 
 func main() {
 	//NEVER COMMIT REAL CREDENTIALS TO GITHUB!!!!!!
@@ -122,8 +163,8 @@ func main() {
 
 	//Route Handlers / Establish Endpoints
 	r.HandleFunc("/products", getProducts).Methods("GET") //get all
-	//r.HandleFunc("/products/{id}", getProduct).Methods("GET") //get single by id
-	//r.HandleFunc("/users", createUser).Methods("POST")        // post user info to DB
+	//r.HandleFunc("/products/{id}", getProduct).Methods("GET") //get single by id Decided to handle all filter in front end
+	r.HandleFunc("/users", createUser).Methods("POST") // post user info to DB
 	//r.HandleFunc("/errors", logError).Methods("POST")         // log error to DB
 
 	//run server (specify port and router variable set when initilizing mux router)

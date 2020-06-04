@@ -5,7 +5,7 @@ var results = [];
 //var imgLink, imgSrc, Pname, Pprice, Ptype, Pcon;
 
 function changeFunc() {
-
+  var results = [];
   //get filter value in variable
   var filter = document.getElementById("filterGames");
   //Code to test Filter Values
@@ -81,11 +81,14 @@ function htmlbuilder(x) {
     }
     //return html;
     document.getElementById("content").innerHTML = html;
-  } else if (x === "xbox") {
+  } else {
     console.log("else html builder");
+    console.log("results: ", results);
+
     let html = "";
+    document.getElementById("content").innerHTML = html;
     for (i = 0; i < results.length; i++) {
-      html = `
+      html += `
     <div class="productcard">
       <a href="${results[i].img_link}">
         <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
@@ -96,52 +99,8 @@ function htmlbuilder(x) {
   `;
     }
     document.getElementById("content").innerHTML = html;
-  } else if (x === "ps4") {
-    console.log("else html builder");
-    let html = "";
-    for (i = 0; i < results.length; i++) {
-      html = `
-      <div class="productcard">
-        <a href="${results[i].img_link}">
-          <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
-          width=200" height="265">
-        </a>
-        <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
-      </div>
-    `;
-    }
-    document.getElementById("content").innerHTML = html;
-  } else if (x === "pc") {
-    console.log("else html builder");
-    let html = "";
-    for (i = 0; i < results.length; i++) {
-      html = `
-        <div class="productcard">
-          <a href="${results[i].img_link}">
-            <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
-            width=200" height="265">
-          </a>
-          <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
-        </div>
-      `;
-    }
-    document.getElementById("content").innerHTML = html;
-  } else if (x === "nintendo") {
-    console.log("else html builder");
-    let html = "";
-    for (i = 0; i < results.length; i++) {
-      html = `
-          <div class="productcard">
-            <a href="${results[i].img_link}">
-              <img alt="${results[i].img_alt}" src= "${results[i].img_src}"
-              width=200" height="265">
-            </a>
-            <p id=Pname>${results[i].name}</p> <p id=Pprice>${results[i].price}</p>  <p id= Ptype>${results[i].description}</p>  <p id= Pcon>${results[i].console}</p>
-          </div>
-        `;
-    }
-    document.getElementById("content").innerHTML = html;
-  }
+   } 
+   results.splice(0,results.length);
 }
 
 function filterConsole(selected) {
@@ -151,39 +110,111 @@ function filterConsole(selected) {
         if (allProductsData[i].console === "xbox") {
           result = allProductsData[i];
           results.push(result);
-          //console.log("results: ", results);
-          return results;
+          //console.log("results: ", results); 
         }
       }
+      return results;
     } else if (selected === "playstation") {
       for (i = 0; i < allProductsData.length; i++) {
         if (allProductsData[i].console === "playstation") {
           result = allProductsData[i];
           results.push(result);
-          //console.log("results: ", results);
-          return results;
+          //console.log("results: ", results);  
         }
       }
+      return results;
     } else if (selected === "pc") {
       for (i = 0; i < allProductsData.length; i++) {
         if (allProductsData[i].console === "pc") {
           result = allProductsData[i];
           results.push(result);
           //console.log("results: ", results);
-          return results;
         }
       }
+      return results;
     } else if (selected === "nintendo") {
       for (i = 0; i < allProductsData.length; i++) {
         if (allProductsData[i].console === "nintendo") {
           result = allProductsData[i];
           results.push(result);
           //console.log("results: ", results);
-          return results;
-        }
       }
+     }
+     return results;
     }
   }
 
   //return results;
 }
+
+function postUser(){
+  var fName = document.getElementById("fname").value;
+  var Lname = document.getElementById("lname").value;
+  var email = document.getElementById("email").value;
+  var comments = document.getElementById("nameList").value;
+  var prefContact, refby;
+  var user = { 
+    FirstName: fName,      
+    LastName: Lname,      
+    Email: email,          
+    //Phone:   ,       
+    ContactMethod: prefContact,  
+    Referral: refby,       
+    Comments: comments       
+  };
+  event.preventDefault();
+    // logic to determine which radio button is clicked and pushed
+    if (document.getElementById("phoneR").checked) {
+      prefContact = document.getElementById("phoneR").value;
+    } else if (document.getElementById("emailR").checked) {
+      prefContact = document.getElementById("emailR").value;
+    }
+
+    // Pass the checkbox name to the function
+
+  var checkboxes = [];
+  checkboxes = document.getElementsByClassName("chkbox");
+  var checkboxesChecked = [];
+  console.log(checkboxes);
+  
+  // loop over them all
+  for (var i=0; i<checkboxes.length; i++) {
+     // And stick the checked ones onto an array...
+     if (checkboxes[i].checked) {
+        checkboxesChecked.push(checkboxes[i].value);
+     }
+  }
+  console.log(checkboxesChecked);
+  refby = checkboxesChecked.toString();
+  console.log(prefContact);
+  console.log(refby);
+ 
+  var Udata = fetch("http://localhost:8070/users", {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    'Content-Type': 'application/json'
+    // 'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: JSON.stringify(user) // body data type must match "Content-Type" header
+});
+console.log(Udata);
+}
+
+
+
+
+function searchConsole(){
+  var search = document.getElementById("searchG");
+  //Code to test Filter Values
+  var searchVal = search.value;
+  if (searchVal === "xbox"){
+    
+  }else{
+    console.log("not xbox");
+   
+  }
+
+}
+
+
